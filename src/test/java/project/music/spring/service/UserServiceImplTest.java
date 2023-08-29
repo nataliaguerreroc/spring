@@ -25,12 +25,10 @@ public class UserServiceImplTest {
 
     @Test
     public void getUsers(){
-        // mock userRepository
         List<User> userList = new ArrayList<>();
         userList.add(new User("Andrea", "andrea@gmail.com", "password", "febrero 2"));
         when(userRepository.findAll()).thenReturn(userList);
 
-        // getUsers() method and check results
         List<User> result = userService.getUsers();
         assertEquals(1, result.size());
         assertEquals("Andrea", result.get(0).getName());
@@ -44,7 +42,6 @@ public class UserServiceImplTest {
         User newUser = new User("Andrea", "andrea@gmail.com", "password", "febrero 2");
         when(userRepository.save(any(User.class))).thenReturn(newUser);
 
-        // add() method and check results
         User result = userService.add("Andrea", "andrea@gmail.com", "password", "febrero 2");
         assertEquals("Andrea", result.getName());
         assertEquals("andrea@gmail.com", result.getEmail());
@@ -56,7 +53,6 @@ public class UserServiceImplTest {
     public void deleteUser(){
         userService.deleteById(1L);
 
-        // Verify that the userRepository.deleteById method was called with the 1L argument
         verify(userRepository, times(1)).deleteById(1L);
     }
 
@@ -66,7 +62,6 @@ public class UserServiceImplTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(User.class))).thenReturn(existingUser);
 
-        // updateById() method and check results
         User updatedUser = new User("Lina", "lina@gmail.com", "password", "abril 4");
         User result = userService.updateById(updatedUser, 1L);
         assertEquals("Lina", result.getName());

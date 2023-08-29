@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
 
     public User add(String name, String email, String password, String birthdate){
         User users = new User(name, email, password, birthdate);
-
         users = this.userRepository.save(users);
         return users;
     }

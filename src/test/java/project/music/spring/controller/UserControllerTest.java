@@ -37,10 +37,8 @@ public class UserControllerTest {
 
     @BeforeEach
     public void setUp() {
-        // mock created for the UserService service
         userService = mock(UserService.class);
 
-        // MockMvc is initialized with UserController controller and the service mock
         mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService)).build();
     }
 
@@ -49,19 +47,16 @@ public class UserControllerTest {
         when(userService.add(anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(new User("Andrea", "andrea@gmail.com", "password", "febrero 2"));
 
-        // a Map object is created for the JSON content
         Map<String, String> userTemp = new HashMap<>();
         userTemp.put("name", "Andrea");
         userTemp.put("email", "andrea@gmail.com");
         userTemp.put("password", "password");
         userTemp.put("birthdate", "febrero 2");
 
-        // Map object converted to JSON
         ObjectMapper objectMapper = new ObjectMapper();
         String userContent = objectMapper.writeValueAsString(userTemp);
 
 
-        // POST request is made to the /users endpoint with JSON data
         mockMvc.perform(post("/users")
                .contentType(MediaType.APPLICATION_JSON)
                .content(userContent)
@@ -79,7 +74,6 @@ public class UserControllerTest {
         userList.add(new User("Andrea", "andrea@gmail.com", "password", "febrero 2"));
         when(userService.getUsers()).thenReturn(userList);
 
-        // GET request is made to the /users endpoint
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -91,17 +85,14 @@ public class UserControllerTest {
 
     @Test
     public void deleteUser() throws Exception{
-        // DELETE request is made to the /users/{id} endpoint
         mockMvc.perform(delete("/users/{id}", 1L))
                 .andExpect(status().isOk());
 
-        // verify that the method userService.deleteById was called with the argument 1L
         verify(userService, times(1)).deleteById(1L);
     }
 
     @Test
     public void updateUser() throws Exception{
-        // Se configura el comportamiento del mock userService
         when(userService.updateById(any(), eq(1L)))
                 .thenReturn(new User("Camilo", "camilo@gmail.com", "password", "marzo 2"));
 
@@ -114,7 +105,6 @@ public class UserControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String userContent = objectMapper.writeValueAsString(userTemp);
 
-        // Se realiza la solicitud PUT al endpoint /users/{id} con datos JSON
         mockMvc.perform(put("/users/{id}", 1L)
                .contentType(MediaType.APPLICATION_JSON)
                .content(userContent)
