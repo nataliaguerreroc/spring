@@ -3,6 +3,7 @@ package project.music.spring.service;
 import project.music.spring.model.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     List<User> getUsers();
@@ -11,6 +12,5 @@ public interface UserService {
 
     void deleteById(Long id);
 
-    User updateById(User user, Long id);
-
+    User updateById(String newName, String newPassword, Long id);
 }

@@ -2,11 +2,14 @@ package project.music.spring.service;
 
 
 import org.springframework.stereotype.Service;
+import project.music.spring.model.entity.Song;
 import project.music.spring.model.entity.User;
 import project.music.spring.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -35,15 +38,13 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public User updateById(User user, Long id){
+    public User updateById(String newName, String newPassword, Long id){
         Optional<User> optionalUser = this.userRepository.findById(id);
         User oldUser = null;
         if(optionalUser.isPresent()){
             oldUser = optionalUser.get();
-            oldUser.setName(user.getName());
-            oldUser.setEmail(user.getEmail());
-            oldUser.setPassword(user.getPassword());
-            oldUser.setBirthdate(user.getBirthdate());
+            oldUser.setName(newName);
+            oldUser.setPassword(newPassword);
 
             oldUser = this.userRepository.save(oldUser);
         }
