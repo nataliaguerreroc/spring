@@ -9,4 +9,8 @@ import java.util.List;
 public interface GenreRepository extends CrudRepository<Genre, Long> {
     @Query("SELECT name from Genre")
     List<String> getNames();
+
+    List<Genre> findAll();
+
+
 }

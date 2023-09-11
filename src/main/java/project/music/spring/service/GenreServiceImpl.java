@@ -2,8 +2,6 @@ package project.music.spring.service;
 
 import org.springframework.stereotype.Service;
 import project.music.spring.model.entity.Genre;
-import project.music.spring.model.entity.Song;
-import project.music.spring.model.entity.User;
 import project.music.spring.repository.GenreRepository;
 
 import java.util.ArrayList;
@@ -20,9 +18,7 @@ public class GenreServiceImpl implements GenreService{
     }
 
     public List<Genre> getGenres(){
-        List<Genre> genres = new ArrayList<>();
-        this.genreRepository.findAll().forEach(genres::add);
-        return genres;
+        return genreRepository.findAll();
     }
 
     public Genre add(String name){

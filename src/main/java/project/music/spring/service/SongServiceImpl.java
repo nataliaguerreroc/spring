@@ -1,15 +1,12 @@
 package project.music.spring.service;
 
-import lombok.Getter;
-import lombok.Setter;
+
 import org.springframework.stereotype.Service;
 import project.music.spring.model.entity.Song;
 import project.music.spring.repository.SongRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
