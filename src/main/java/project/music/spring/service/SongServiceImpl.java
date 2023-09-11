@@ -1,13 +1,12 @@
 package project.music.spring.service;
 
+
 import org.springframework.stereotype.Service;
 import project.music.spring.model.entity.Song;
 import project.music.spring.repository.SongRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -25,18 +24,8 @@ public class SongServiceImpl implements SongService{
         return songs;
     }
 
-    public List <Map<String,String>> getSongsInfo(){
-        List <Map<String,String>> songsInfo = new ArrayList< Map<String,String> >();
-        this.songRepository.findAll().forEach(s ->{
-            Map<String,String> map = new HashMap<>();
-            map.put("Title",s.getName());
-            songsInfo.add(map);
-        });
-        return songsInfo;
-    }
-
-    public Song add(String name){
-        Song song = new Song(name);
+    public Song add(String name, Integer duration){
+        Song song = new Song(name, duration);
         return this.songRepository.save(song);
     }
 
@@ -46,6 +35,7 @@ public class SongServiceImpl implements SongService{
         if(optionalSong.isPresent()){
             oldSong = optionalSong.get();
             oldSong.setName(song.getName());
+            oldSong.setDuration(song.getDuration());
             oldSong = this.songRepository.save(oldSong);
         }
         return oldSong;

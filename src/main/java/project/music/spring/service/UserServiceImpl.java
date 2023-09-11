@@ -35,15 +35,13 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public User updateById(User user, Long id){
+    public User updateById(String newName, String newPassword, Long id){
         Optional<User> optionalUser = this.userRepository.findById(id);
         User oldUser = null;
         if(optionalUser.isPresent()){
             oldUser = optionalUser.get();
-            oldUser.setName(user.getName());
-            oldUser.setEmail(user.getEmail());
-            oldUser.setPassword(user.getPassword());
-            oldUser.setBirthdate(user.getBirthdate());
+            oldUser.setName(newName);
+            oldUser.setPassword(newPassword);
 
             oldUser = this.userRepository.save(oldUser);
         }
