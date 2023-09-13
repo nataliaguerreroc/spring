@@ -7,6 +7,7 @@ import project.music.spring.repository.GenreRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class GenreServiceImpl implements GenreService{
@@ -28,7 +29,7 @@ public class GenreServiceImpl implements GenreService{
 
     }
 
-    public Genre updateById(Genre genre, Long id){
+    public Genre updateById(Genre genre, UUID id){
         Optional<Genre> optionalGenre = this.genreRepository.findById(id);
         Genre oldGenre = null;
         if(optionalGenre.isPresent()){
@@ -39,7 +40,7 @@ public class GenreServiceImpl implements GenreService{
         return oldGenre;
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         this.genreRepository.deleteById(id);
     }
 

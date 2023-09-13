@@ -1,6 +1,7 @@
 package project.music.spring.model.entity;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,12 +22,13 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "genre")
-public class Genre {
+public class Genre extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
 
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @OneToMany

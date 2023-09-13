@@ -8,6 +8,7 @@ import project.music.spring.repository.SongRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SongServiceImpl implements SongService{
@@ -29,7 +30,7 @@ public class SongServiceImpl implements SongService{
         return this.songRepository.save(song);
     }
 
-    public Song updateById(Song song,Long id){
+    public Song updateById(Song song, UUID id){
         Optional<Song> optionalSong = this.songRepository.findById(id);
         Song oldSong = null;
         if(optionalSong.isPresent()){
@@ -41,7 +42,7 @@ public class SongServiceImpl implements SongService{
         return oldSong;
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         Optional<Song> optionalSong = this.songRepository.findById(id);
         if(optionalSong.isPresent()){
             Song song = optionalSong.get();
