@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,6 +21,7 @@ import project.music.spring.model.entity.User;
 import project.music.spring.service.UserService;
 
 import java.util.List;
+import java.util.UUID;
 
 import static project.music.spring.constant.Constants.USERS;
 
@@ -61,7 +63,8 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long id){
+    @Transactional
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable UUID id){
         try{
             userService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -71,11 +74,10 @@ public class UserController {
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id){
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable UUID id){
         log.info("Updatting users with name {}", userDTO.name());
         try{
-            //User userToUpdate = userMapper.dtoToEntity(userDTO);
-            User userToUpdate = userService.updateById(userDTO.name(), userDTO.password(), id);
+            User userToUpdate = userService.updateById(userDTO.name(), userDTO.email(), userDTO.password(), userDTO.birthdate(), id);
             UserDTO updatedUserDTO = userMapper.entityToDto(userToUpdate);
             return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
         }catch (Exception e){

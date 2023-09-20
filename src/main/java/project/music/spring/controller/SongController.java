@@ -1,9 +1,11 @@
 package project.music.spring.controller;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +20,11 @@ import project.music.spring.mapper.SongMapper;
 import project.music.spring.service.SongService;
 
 import java.util.List;
+import java.util.UUID;
 
 import static project.music.spring.constant.Constants.SONGS;
 
+@Slf4j
 @RestController
 @RequestMapping(value = SONGS)
 public class SongController {
@@ -58,7 +62,8 @@ public class SongController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<SongDTO> updateSong(@RequestBody SongDTO songDTO, @PathVariable Long id){
+        public ResponseEntity<SongDTO> updateSong(@RequestBody SongDTO songDTO, @PathVariable UUID id){
+        log.info("Updatting users with name {}", songDTO.name());
         try{
             Song songToUpdate = songMapper.dtoToEntity(songDTO);
             Song updatedSong = songService.updateById(songToUpdate, id);
@@ -70,7 +75,8 @@ public class SongController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<SongDTO> deleteUser(@PathVariable Long id){
+    @Transactional
+    public ResponseEntity<SongDTO> deleteUser(@PathVariable UUID id){
         try{
             songService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);

@@ -1,6 +1,8 @@
 package project.music.spring.model.entity;
 
 
+import com.querydsl.core.annotations.QueryEntities;
+import com.querydsl.core.annotations.QueryEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,11 +23,11 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "userC")
-public class User {
+public class User extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;

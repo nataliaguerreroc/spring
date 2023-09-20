@@ -21,11 +21,11 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "Song")
-public class Song {
+public class Song extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
 
     @Column(name = "name", unique = true, nullable = false)
     private String name;
