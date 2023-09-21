@@ -5,6 +5,8 @@ import org.mapstruct.Mapping;
 import project.music.spring.model.dto.UserDTO;
 import project.music.spring.model.entity.User;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
@@ -13,5 +15,7 @@ public interface UserMapper {
     User dtoToEntity(UserDTO dto);
 
     UserDTO entityToDto(User entity);
+
+    List<UserDTO> entityListToListDTO(List<User> entityList);
 
 }

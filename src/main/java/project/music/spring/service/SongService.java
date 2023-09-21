@@ -10,6 +10,8 @@ public interface SongService {
 
     Song add(String name, Integer duration);
 
+    List<Song> findSongByDuration();
+
     void deleteById(UUID id);
 
     Song updateById(Song song,UUID id);

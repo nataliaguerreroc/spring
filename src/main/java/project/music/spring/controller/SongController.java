@@ -22,6 +22,7 @@ import project.music.spring.service.SongService;
 import java.util.List;
 import java.util.UUID;
 
+import static project.music.spring.constant.Constants.DURATIONS;
 import static project.music.spring.constant.Constants.SONGS;
 
 @Slf4j
@@ -30,7 +31,6 @@ import static project.music.spring.constant.Constants.SONGS;
 public class SongController {
 
     private final SongService songService;
-
     private final SongMapper songMapper;
 
     public SongController(SongService songService, SongMapper songMapper) {
@@ -62,16 +62,11 @@ public class SongController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<SongDTO> updateSong(@RequestBody SongDTO songDTO, @PathVariable UUID id){
-        log.info("Updatting users with name {}", songDTO.name());
-        try{
-            Song songToUpdate = songMapper.dtoToEntity(songDTO);
-            Song updatedSong = songService.updateById(songToUpdate, id);
-            SongDTO updatedSongDTO = songMapper.entityToDto(updatedSong);
-            return new ResponseEntity<>(updatedSongDTO, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<SongDTO> updateSong(@RequestBody SongDTO songDTO, @PathVariable UUID id){
+        Song songToUpdate = songMapper.dtoToEntity(songDTO);
+        Song updatedSong = songService.updateById(songToUpdate, id);
+        SongDTO updatedSongDTO = songMapper.entityToDto(updatedSong);
+        return new ResponseEntity<>(updatedSongDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -83,6 +78,13 @@ public class SongController {
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(DURATIONS)
+    public ResponseEntity<List<SongDTO>> findSongByDuration() {
+        List<SongDTO> song = songService.findSongByDuration().stream()
+                .map(songMapper::entityToDto).toList();
+        return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
 

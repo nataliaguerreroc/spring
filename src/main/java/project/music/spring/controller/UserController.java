@@ -75,14 +75,9 @@ public class UserController {
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable UUID id){
-        log.info("Updatting users with name {}", userDTO.name());
-        try{
             User userToUpdate = userService.updateById(userDTO.name(), userDTO.email(), userDTO.password(), userDTO.birthdate(), id);
             UserDTO updatedUserDTO = userMapper.entityToDto(userToUpdate);
             return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 
 

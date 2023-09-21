@@ -11,13 +11,17 @@
 //import org.springframework.test.web.servlet.MockMvc;
 //import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 //import project.music.spring.controller.UserController;
+//import project.music.spring.mapper.UserMapper;
+//import project.music.spring.model.dto.UserDTO;
 //import project.music.spring.model.entity.User;
 //import project.music.spring.service.UserService;
 //
 //import java.util.ArrayList;
+//import java.util.Collections;
 //import java.util.HashMap;
 //import java.util.List;
 //import java.util.Map;
+//import java.util.UUID;
 //
 //import static org.hamcrest.Matchers.hasSize;
 //import static org.mockito.Mockito.*;
@@ -32,35 +36,36 @@
 //    @Autowired
 //    private MockMvc mockMvc;
 //
+//
 //    @MockBean
 //    private UserService userService;
+//
+//    @MockBean
+//    private UserMapper userMapper;
 //
 //    @BeforeEach
 //    public void setUp() {
 //        userService = mock(UserService.class);
 //
-//        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService)).build();
+//        userMapper = mock(UserMapper.class);
+//
+//        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService, userMapper)).build();
 //    }
 //
 //    @Test
 //    public void createUser() throws Exception{
-//        when(userService.add(anyString(), anyString(), anyString(), anyString()))
-//                .thenReturn(new User("Andrea", "andrea@gmail.com", "password", "febrero 2"));
+//        User newUser = new User("Andrea", "andrea@gmail.com", "password", "febrero 2");
 //
-//        Map<String, String> userTemp = new HashMap<>();
-//        userTemp.put("name", "Andrea");
-//        userTemp.put("email", "andrea@gmail.com");
-//        userTemp.put("password", "password");
-//        userTemp.put("birthdate", "febrero 2");
+//        when(userService.add(anyString(), anyString(), anyString(), anyString()))
+//                .thenReturn(newUser);
 //
 //        ObjectMapper objectMapper = new ObjectMapper();
-//        String userContent = objectMapper.writeValueAsString(userTemp);
-//
+//        String userContent = objectMapper.writeValueAsString(newUser);
 //
 //        mockMvc.perform(post("/users")
-//               .contentType(MediaType.APPLICATION_JSON)
-//               .content(userContent)
-//        )
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(userContent)
+//                )
 //                .andExpect(status().isCreated())
 //                .andExpect(jsonPath("$.name").value("Andrea"))
 //                .andExpect(jsonPath("$.email").value("andrea@gmail.com"))
@@ -68,11 +73,29 @@
 //                .andExpect(jsonPath("$.birthdate").value("febrero 2"));
 //    }
 //
+////    @Test
+////    public void getUser() throws Exception{
+////        List<User> userList = new ArrayList<>();
+////        userList.add(new User("Andrea", "andrea@gmail.com", "password", "febrero 2"));
+////        when(userService.getUsers()).thenReturn(userList);
+////
+////        mockMvc.perform(get("/users"))
+////                .andExpect(status().isOk())
+////                .andExpect(jsonPath("$", hasSize(1)))
+////                .andExpect(jsonPath("$[0].name").value("Andrea"))
+////                .andExpect(jsonPath("$[0].email").value("andrea@gmail.com"))
+////                .andExpect(jsonPath("$[0].password").value("password"))
+////                .andExpect(jsonPath("$[0].birthdate").value("febrero 2"));
+////    }
+//
 //    @Test
 //    public void getUser() throws Exception{
-//        List<User> userList = new ArrayList<>();
-//        userList.add(new User("Andrea", "andrea@gmail.com", "password", "febrero 2"));
-//        when(userService.getUsers()).thenReturn(userList);
+//        List<UserDTO> userDTOList = new ArrayList<>();
+//        userDTOList.add(new UserDTO("Andrea", "andrea@gmail.com", "password", "febrero 2"));
+//
+//        // Configura el comportamiento del servicio
+//        when(userService.getUsers()).thenReturn(userMapper.entityListDTOToList(userDTOList));
+//
 //
 //        mockMvc.perform(get("/users"))
 //                .andExpect(status().isOk())
@@ -85,15 +108,17 @@
 //
 //    @Test
 //    public void deleteUser() throws Exception{
-//        mockMvc.perform(delete("/users/{id}", 1L))
+//        UUID userID = UUID.randomUUID();
+//        mockMvc.perform(delete("/users/{id}", userID))
 //                .andExpect(status().isOk());
 //
-//        verify(userService, times(1)).deleteById(1L);
+//        verify(userService, times(1)).deleteById(userID);
 //    }
 //
 //    @Test
 //    public void updateUser() throws Exception{
-//        when(userService.updateById(any(), eq(1L)))
+//        UUID userID = UUID.randomUUID();
+//        when(userService.updateById(any(), any(), any(), any(), eq(userID)))
 //                .thenReturn(new User("Camilo", "camilo@gmail.com", "password", "marzo 2"));
 //
 //        Map<String, String> userTemp = new HashMap<>();
