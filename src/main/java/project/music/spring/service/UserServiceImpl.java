@@ -40,20 +40,20 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public User updateById(String newName, String newEmail, String newPassword, String newBirthdate, UUID id){
+    public User updateById(String newName, String newEmail, String newPassword, String newBirthdate, UUID id) {
         Optional<User> optionalUser = this.userRepository.findById(id);
-        if (optionalUser.isEmpty()){
+        if (optionalUser.isEmpty()) {
             throw new UserNotRegistered("No user found with the given ID: " + id);
-        }else {
-            log.info("Updatting user with name {}", newName);
-            User oldUser = optionalUser.get();
-            oldUser.setName(newName);
-            oldUser.setEmail(newEmail);
-            oldUser.setPassword(encryptSHA256(newPassword));
-            oldUser.setBirthdate(newBirthdate);
-            oldUser = this.userRepository.save(oldUser);
-            return oldUser;
         }
+        log.info("Updatting user with name {}", newName);
+        User oldUser = optionalUser.get();
+        oldUser.setName(newName);
+        oldUser.setEmail(newEmail);
+        oldUser.setPassword(encryptSHA256(newPassword));
+        oldUser.setBirthdate(newBirthdate);
+        oldUser = this.userRepository.save(oldUser);
+        return oldUser;
+
     }
 
 
