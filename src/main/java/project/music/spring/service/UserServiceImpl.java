@@ -1,7 +1,9 @@
 package project.music.spring.service;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import project.music.spring.exceptions.UserNotRegistered;
 import project.music.spring.model.entity.User;
 import project.music.spring.repository.UserRepository;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.UUID;
 import static project.music.spring.utils.Encrypt.encryptSHA256;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -37,18 +40,20 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public User updateById(String newName, String newEmail, String newPassword, String newBirthdate, UUID id){
+    public User updateById(String newName, String newEmail, String newPassword, String newBirthdate, UUID id) {
         Optional<User> optionalUser = this.userRepository.findById(id);
-        User oldUser = null;
-        if(optionalUser.isPresent()){
-            oldUser = optionalUser.get();
-            oldUser.setName(newName);
-            oldUser.setEmail(newEmail);
-            oldUser.setPassword(encryptSHA256(newPassword));
-            oldUser.setBirthdate(newBirthdate);
-            oldUser = this.userRepository.save(oldUser);
+        if (optionalUser.isEmpty()) {
+            throw new UserNotRegistered("No user found with the given ID: " + id);
         }
+        log.info("Updatting user with name {}", newName);
+        User oldUser = optionalUser.get();
+        oldUser.setName(newName);
+        oldUser.setEmail(newEmail);
+        oldUser.setPassword(encryptSHA256(newPassword));
+        oldUser.setBirthdate(newBirthdate);
+        oldUser = this.userRepository.save(oldUser);
         return oldUser;
+
     }
 
 

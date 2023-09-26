@@ -5,7 +5,6 @@ import org.mapstruct.Mapping;
 import project.music.spring.model.dto.SongDTO;
 import project.music.spring.model.entity.Song;
 
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface SongMapper {

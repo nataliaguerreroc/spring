@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 public final class Constants {
     public static final String USERS = "/users";
     public static final String SONGS = "/songs";
-
+    public static final String DURATIONS = "/durations";
     public static final String GENRES = "/genres";
+    public static final String COUNTRIES = "/countries";
 }

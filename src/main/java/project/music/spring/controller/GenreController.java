@@ -25,7 +25,6 @@ import java.util.UUID;
 
 import static project.music.spring.constant.Constants.GENRES;
 
-@Slf4j
 @RestController
 @RequestMapping(value = GENRES)
 public class GenreController {
@@ -65,15 +64,10 @@ public class GenreController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GenreDTO> updateGenre(@RequestBody GenreDTO genreDTO, @PathVariable UUID id){
-        log.info("Updatting users with name {}", genreDTO.name());
-        try{
             Genre genreToUpdate = genreMapper.dtoToEntity(genreDTO);
             Genre updatedGenre = genreService.updateById(genreToUpdate, id);
             GenreDTO updatedGenreDTO = genreMapper.entityToDto(updatedGenre);
             return new ResponseEntity<>(updatedGenreDTO, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @DeleteMapping(value = "/{id}")
